@@ -36,7 +36,9 @@ async function bootstrap() {
     throw new Error('A variável de ambiente PORT deve ser um número válido.');
   }
 
-  await app.listen(porta);
+  // Só localhost: este serviço só deve ser alcançado pelo gateway, na mesma máquina — nunca
+  // diretamente pela rede (ver plano de modo Servidor/Cliente, seção de hardening).
+  await app.listen(porta, '127.0.0.1');
 
   console.log(`API Locador executando na porta ${porta}`);
   console.log(`Swagger disponível em http://localhost:${porta}/api/docs`);
