@@ -33,6 +33,15 @@ export class AtualizarLocadorDto {
   email?: string;
 
   @ApiPropertyOptional({
+    example: '(11) 91234-5678',
+    description: 'Telefone de contato do locador.',
+  })
+  @IsString()
+  @IsOptional()
+  @Length(8, 20)
+  telefone?: string;
+
+  @ApiPropertyOptional({
     type: AtualizarEnderecoLocadorDto,
     description: 'Dados opcionais do endereço do locador.',
   })

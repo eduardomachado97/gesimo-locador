@@ -18,6 +18,7 @@ export class LocadorMapper {
       usuarioId: Number(locador.usuario_id),
       tipoPessoa: locador.tipo_pessoa,
       email: locador.email,
+      telefone: locador.telefone ?? null,
       status: locador.status,
       criadoEm: locador.criado_em,
       atualizadoEm: locador.atualizado_em,

@@ -41,6 +41,7 @@ export type LocadorMinAggregateOutputType = {
   usuario_id: bigint | null
   tipo_pessoa: $Enums.tipo_pessoa | null
   email: string | null
+  telefone: string | null
   status: $Enums.locador_status | null
   criado_em: Date | null
   atualizado_em: Date | null
@@ -51,6 +52,7 @@ export type LocadorMaxAggregateOutputType = {
   usuario_id: bigint | null
   tipo_pessoa: $Enums.tipo_pessoa | null
   email: string | null
+  telefone: string | null
   status: $Enums.locador_status | null
   criado_em: Date | null
   atualizado_em: Date | null
@@ -61,6 +63,7 @@ export type LocadorCountAggregateOutputType = {
   usuario_id: number
   tipo_pessoa: number
   email: number
+  telefone: number
   status: number
   criado_em: number
   atualizado_em: number
@@ -83,6 +86,7 @@ export type LocadorMinAggregateInputType = {
   usuario_id?: true
   tipo_pessoa?: true
   email?: true
+  telefone?: true
   status?: true
   criado_em?: true
   atualizado_em?: true
@@ -93,6 +97,7 @@ export type LocadorMaxAggregateInputType = {
   usuario_id?: true
   tipo_pessoa?: true
   email?: true
+  telefone?: true
   status?: true
   criado_em?: true
   atualizado_em?: true
@@ -103,6 +108,7 @@ export type LocadorCountAggregateInputType = {
   usuario_id?: true
   tipo_pessoa?: true
   email?: true
+  telefone?: true
   status?: true
   criado_em?: true
   atualizado_em?: true
@@ -200,6 +206,7 @@ export type LocadorGroupByOutputType = {
   usuario_id: bigint
   tipo_pessoa: $Enums.tipo_pessoa
   email: string
+  telefone: string | null
   status: $Enums.locador_status
   criado_em: Date
   atualizado_em: Date
@@ -233,6 +240,7 @@ export type locadorWhereInput = {
   usuario_id?: Prisma.BigIntFilter<"locador"> | bigint | number
   tipo_pessoa?: Prisma.Enumtipo_pessoaFilter<"locador"> | $Enums.tipo_pessoa
   email?: Prisma.StringFilter<"locador"> | string
+  telefone?: Prisma.StringNullableFilter<"locador"> | string | null
   status?: Prisma.Enumlocador_statusFilter<"locador"> | $Enums.locador_status
   criado_em?: Prisma.DateTimeFilter<"locador"> | Date | string
   atualizado_em?: Prisma.DateTimeFilter<"locador"> | Date | string
@@ -246,6 +254,7 @@ export type locadorOrderByWithRelationInput = {
   usuario_id?: Prisma.SortOrder
   tipo_pessoa?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  telefone?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   criado_em?: Prisma.SortOrder
   atualizado_em?: Prisma.SortOrder
@@ -263,6 +272,7 @@ export type locadorWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.locadorWhereInput | Prisma.locadorWhereInput[]
   usuario_id?: Prisma.BigIntFilter<"locador"> | bigint | number
   tipo_pessoa?: Prisma.Enumtipo_pessoaFilter<"locador"> | $Enums.tipo_pessoa
+  telefone?: Prisma.StringNullableFilter<"locador"> | string | null
   status?: Prisma.Enumlocador_statusFilter<"locador"> | $Enums.locador_status
   criado_em?: Prisma.DateTimeFilter<"locador"> | Date | string
   atualizado_em?: Prisma.DateTimeFilter<"locador"> | Date | string
@@ -276,6 +286,7 @@ export type locadorOrderByWithAggregationInput = {
   usuario_id?: Prisma.SortOrder
   tipo_pessoa?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  telefone?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   criado_em?: Prisma.SortOrder
   atualizado_em?: Prisma.SortOrder
@@ -294,6 +305,7 @@ export type locadorScalarWhereWithAggregatesInput = {
   usuario_id?: Prisma.BigIntWithAggregatesFilter<"locador"> | bigint | number
   tipo_pessoa?: Prisma.Enumtipo_pessoaWithAggregatesFilter<"locador"> | $Enums.tipo_pessoa
   email?: Prisma.StringWithAggregatesFilter<"locador"> | string
+  telefone?: Prisma.StringNullableWithAggregatesFilter<"locador"> | string | null
   status?: Prisma.Enumlocador_statusWithAggregatesFilter<"locador"> | $Enums.locador_status
   criado_em?: Prisma.DateTimeWithAggregatesFilter<"locador"> | Date | string
   atualizado_em?: Prisma.DateTimeWithAggregatesFilter<"locador"> | Date | string
@@ -304,6 +316,7 @@ export type locadorCreateInput = {
   usuario_id: bigint | number
   tipo_pessoa: $Enums.tipo_pessoa
   email: string
+  telefone?: string | null
   status?: $Enums.locador_status
   criado_em?: Date | string
   atualizado_em?: Date | string
@@ -317,6 +330,7 @@ export type locadorUncheckedCreateInput = {
   usuario_id: bigint | number
   tipo_pessoa: $Enums.tipo_pessoa
   email: string
+  telefone?: string | null
   status?: $Enums.locador_status
   criado_em?: Date | string
   atualizado_em?: Date | string
@@ -330,6 +344,7 @@ export type locadorUpdateInput = {
   usuario_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   tipo_pessoa?: Prisma.Enumtipo_pessoaFieldUpdateOperationsInput | $Enums.tipo_pessoa
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.Enumlocador_statusFieldUpdateOperationsInput | $Enums.locador_status
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   atualizado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -343,6 +358,7 @@ export type locadorUncheckedUpdateInput = {
   usuario_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   tipo_pessoa?: Prisma.Enumtipo_pessoaFieldUpdateOperationsInput | $Enums.tipo_pessoa
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.Enumlocador_statusFieldUpdateOperationsInput | $Enums.locador_status
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   atualizado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -356,6 +372,7 @@ export type locadorCreateManyInput = {
   usuario_id: bigint | number
   tipo_pessoa: $Enums.tipo_pessoa
   email: string
+  telefone?: string | null
   status?: $Enums.locador_status
   criado_em?: Date | string
   atualizado_em?: Date | string
@@ -366,6 +383,7 @@ export type locadorUpdateManyMutationInput = {
   usuario_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   tipo_pessoa?: Prisma.Enumtipo_pessoaFieldUpdateOperationsInput | $Enums.tipo_pessoa
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.Enumlocador_statusFieldUpdateOperationsInput | $Enums.locador_status
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   atualizado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -376,6 +394,7 @@ export type locadorUncheckedUpdateManyInput = {
   usuario_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   tipo_pessoa?: Prisma.Enumtipo_pessoaFieldUpdateOperationsInput | $Enums.tipo_pessoa
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.Enumlocador_statusFieldUpdateOperationsInput | $Enums.locador_status
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   atualizado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -397,6 +416,7 @@ export type locadorCountOrderByAggregateInput = {
   usuario_id?: Prisma.SortOrder
   tipo_pessoa?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  telefone?: Prisma.SortOrder
   status?: Prisma.SortOrder
   criado_em?: Prisma.SortOrder
   atualizado_em?: Prisma.SortOrder
@@ -412,6 +432,7 @@ export type locadorMaxOrderByAggregateInput = {
   usuario_id?: Prisma.SortOrder
   tipo_pessoa?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  telefone?: Prisma.SortOrder
   status?: Prisma.SortOrder
   criado_em?: Prisma.SortOrder
   atualizado_em?: Prisma.SortOrder
@@ -422,6 +443,7 @@ export type locadorMinOrderByAggregateInput = {
   usuario_id?: Prisma.SortOrder
   tipo_pessoa?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  telefone?: Prisma.SortOrder
   status?: Prisma.SortOrder
   criado_em?: Prisma.SortOrder
   atualizado_em?: Prisma.SortOrder
@@ -491,6 +513,7 @@ export type locadorCreateWithoutEndereco_locadorInput = {
   usuario_id: bigint | number
   tipo_pessoa: $Enums.tipo_pessoa
   email: string
+  telefone?: string | null
   status?: $Enums.locador_status
   criado_em?: Date | string
   atualizado_em?: Date | string
@@ -503,6 +526,7 @@ export type locadorUncheckedCreateWithoutEndereco_locadorInput = {
   usuario_id: bigint | number
   tipo_pessoa: $Enums.tipo_pessoa
   email: string
+  telefone?: string | null
   status?: $Enums.locador_status
   criado_em?: Date | string
   atualizado_em?: Date | string
@@ -531,6 +555,7 @@ export type locadorUpdateWithoutEndereco_locadorInput = {
   usuario_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   tipo_pessoa?: Prisma.Enumtipo_pessoaFieldUpdateOperationsInput | $Enums.tipo_pessoa
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.Enumlocador_statusFieldUpdateOperationsInput | $Enums.locador_status
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   atualizado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -543,6 +568,7 @@ export type locadorUncheckedUpdateWithoutEndereco_locadorInput = {
   usuario_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   tipo_pessoa?: Prisma.Enumtipo_pessoaFieldUpdateOperationsInput | $Enums.tipo_pessoa
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.Enumlocador_statusFieldUpdateOperationsInput | $Enums.locador_status
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   atualizado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -555,6 +581,7 @@ export type locadorCreateWithoutLocador_pessoa_fisicaInput = {
   usuario_id: bigint | number
   tipo_pessoa: $Enums.tipo_pessoa
   email: string
+  telefone?: string | null
   status?: $Enums.locador_status
   criado_em?: Date | string
   atualizado_em?: Date | string
@@ -567,6 +594,7 @@ export type locadorUncheckedCreateWithoutLocador_pessoa_fisicaInput = {
   usuario_id: bigint | number
   tipo_pessoa: $Enums.tipo_pessoa
   email: string
+  telefone?: string | null
   status?: $Enums.locador_status
   criado_em?: Date | string
   atualizado_em?: Date | string
@@ -595,6 +623,7 @@ export type locadorUpdateWithoutLocador_pessoa_fisicaInput = {
   usuario_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   tipo_pessoa?: Prisma.Enumtipo_pessoaFieldUpdateOperationsInput | $Enums.tipo_pessoa
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.Enumlocador_statusFieldUpdateOperationsInput | $Enums.locador_status
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   atualizado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -607,6 +636,7 @@ export type locadorUncheckedUpdateWithoutLocador_pessoa_fisicaInput = {
   usuario_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   tipo_pessoa?: Prisma.Enumtipo_pessoaFieldUpdateOperationsInput | $Enums.tipo_pessoa
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.Enumlocador_statusFieldUpdateOperationsInput | $Enums.locador_status
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   atualizado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -619,6 +649,7 @@ export type locadorCreateWithoutLocador_pessoa_juridicaInput = {
   usuario_id: bigint | number
   tipo_pessoa: $Enums.tipo_pessoa
   email: string
+  telefone?: string | null
   status?: $Enums.locador_status
   criado_em?: Date | string
   atualizado_em?: Date | string
@@ -631,6 +662,7 @@ export type locadorUncheckedCreateWithoutLocador_pessoa_juridicaInput = {
   usuario_id: bigint | number
   tipo_pessoa: $Enums.tipo_pessoa
   email: string
+  telefone?: string | null
   status?: $Enums.locador_status
   criado_em?: Date | string
   atualizado_em?: Date | string
@@ -659,6 +691,7 @@ export type locadorUpdateWithoutLocador_pessoa_juridicaInput = {
   usuario_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   tipo_pessoa?: Prisma.Enumtipo_pessoaFieldUpdateOperationsInput | $Enums.tipo_pessoa
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.Enumlocador_statusFieldUpdateOperationsInput | $Enums.locador_status
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   atualizado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -671,6 +704,7 @@ export type locadorUncheckedUpdateWithoutLocador_pessoa_juridicaInput = {
   usuario_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   tipo_pessoa?: Prisma.Enumtipo_pessoaFieldUpdateOperationsInput | $Enums.tipo_pessoa
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  telefone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.Enumlocador_statusFieldUpdateOperationsInput | $Enums.locador_status
   criado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   atualizado_em?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -685,6 +719,7 @@ export type locadorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   usuario_id?: boolean
   tipo_pessoa?: boolean
   email?: boolean
+  telefone?: boolean
   status?: boolean
   criado_em?: boolean
   atualizado_em?: boolean
@@ -700,12 +735,13 @@ export type locadorSelectScalar = {
   usuario_id?: boolean
   tipo_pessoa?: boolean
   email?: boolean
+  telefone?: boolean
   status?: boolean
   criado_em?: boolean
   atualizado_em?: boolean
 }
 
-export type locadorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "usuario_id" | "tipo_pessoa" | "email" | "status" | "criado_em" | "atualizado_em", ExtArgs["result"]["locador"]>
+export type locadorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "usuario_id" | "tipo_pessoa" | "email" | "telefone" | "status" | "criado_em" | "atualizado_em", ExtArgs["result"]["locador"]>
 export type locadorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   endereco_locador?: boolean | Prisma.locador$endereco_locadorArgs<ExtArgs>
   locador_pessoa_fisica?: boolean | Prisma.locador$locador_pessoa_fisicaArgs<ExtArgs>
@@ -724,6 +760,7 @@ export type $locadorPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     usuario_id: bigint
     tipo_pessoa: $Enums.tipo_pessoa
     email: string
+    telefone: string | null
     status: $Enums.locador_status
     criado_em: Date
     atualizado_em: Date
@@ -1103,6 +1140,7 @@ export interface locadorFieldRefs {
   readonly usuario_id: Prisma.FieldRef<"locador", 'BigInt'>
   readonly tipo_pessoa: Prisma.FieldRef<"locador", 'tipo_pessoa'>
   readonly email: Prisma.FieldRef<"locador", 'String'>
+  readonly telefone: Prisma.FieldRef<"locador", 'String'>
   readonly status: Prisma.FieldRef<"locador", 'locador_status'>
   readonly criado_em: Prisma.FieldRef<"locador", 'DateTime'>
   readonly atualizado_em: Prisma.FieldRef<"locador", 'DateTime'>

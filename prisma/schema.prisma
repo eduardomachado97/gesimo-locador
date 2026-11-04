@@ -27,6 +27,7 @@ model locador {
   usuario_id              BigInt
   tipo_pessoa             tipo_pessoa
   email                   String                   @unique(map: "email") @db.VarChar(150)
+  telefone                String?                  @db.VarChar(20)
   status                  locador_status           @default(ATIVO)
   criado_em               DateTime                 @default(now()) @db.DateTime(0)
   atualizado_em           DateTime                 @default(now()) @db.DateTime(0)

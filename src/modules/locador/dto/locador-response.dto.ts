@@ -29,6 +29,12 @@ export class LocadorResponseDto {
   })
   email!: string;
 
+  @ApiPropertyOptional({
+    example: '(11) 91234-5678',
+    description: 'Telefone de contato do locador.',
+  })
+  telefone?: string | null;
+
   @ApiProperty({
     enum: StatusLocador,
     example: StatusLocador.ATIVO,

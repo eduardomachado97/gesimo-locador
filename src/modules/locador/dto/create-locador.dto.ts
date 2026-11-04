@@ -32,6 +32,15 @@ export class CriarLocadorDto {
   @Length(5, 150)
   email!: string;
 
+  @ApiPropertyOptional({
+    example: '(11) 91234-5678',
+    description: 'Telefone de contato do locador.',
+  })
+  @IsOptional()
+  @IsString()
+  @Length(8, 20)
+  telefone?: string;
+
   @ApiProperty({
     type: CriarEnderecoLocadorDto,
     description: 'Endereço vinculado ao locador.',

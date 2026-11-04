@@ -65,6 +65,7 @@ export class LocadorService {
             usuario_id: BigInt(usuarioIdCorretorLogado),
             tipo_pessoa: criarLocadorDto.tipoPessoa,
             email: criarLocadorDto.email,
+            telefone: criarLocadorDto.telefone,
             endereco_locador: {
               create: {
                 logradouro: criarLocadorDto.endereco.logradouro,
@@ -292,6 +293,7 @@ export class LocadorService {
           data: {
             tipo_pessoa: atualizarLocadorDto.tipoPessoa,
             email: atualizarLocadorDto.email,
+            telefone: atualizarLocadorDto.telefone,
           },
           include: INCLUDE_LOCADOR_COMPLETO,
         });

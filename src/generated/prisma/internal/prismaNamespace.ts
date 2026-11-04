@@ -729,6 +729,7 @@ export const LocadorScalarFieldEnum = {
   usuario_id: 'usuario_id',
   tipo_pessoa: 'tipo_pessoa',
   email: 'email',
+  telefone: 'telefone',
   status: 'status',
   criado_em: 'criado_em',
   atualizado_em: 'atualizado_em'
@@ -787,7 +788,8 @@ export type endereco_locadorOrderByRelevanceFieldEnum = (typeof endereco_locador
 
 
 export const locadorOrderByRelevanceFieldEnum = {
-  email: 'email'
+  email: 'email',
+  telefone: 'telefone'
 } as const
 
 export type locadorOrderByRelevanceFieldEnum = (typeof locadorOrderByRelevanceFieldEnum)[keyof typeof locadorOrderByRelevanceFieldEnum]
