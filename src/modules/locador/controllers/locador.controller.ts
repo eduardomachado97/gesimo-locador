@@ -8,8 +8,10 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
+import type { Request } from 'express';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -239,8 +241,14 @@ export class LocadorController {
   inativarLocador(
     @UsuarioLogado() usuario: UsuarioAutenticado,
     @Param('id', ParseIntPipe) id: number,
+    @Req() req: Request,
   ) {
-    return this.locadorService.inativarLocador(id, usuario.id, usuario.role);
+    return this.locadorService.inativarLocador(
+      id,
+      usuario.id,
+      usuario.role,
+      req.headers.authorization,
+    );
   }
 
   @Patch(':id/reativar')
@@ -316,11 +324,13 @@ export class LocadorController {
   removerLocadorDefinitivo(
     @UsuarioLogado() usuario: UsuarioAutenticado,
     @Param('id', ParseIntPipe) id: number,
+    @Req() req: Request,
   ) {
     return this.locadorService.removerLocadorDefinitivo(
       id,
       usuario.id,
       usuario.role,
+      req.headers.authorization,
     );
   }
 }

@@ -140,12 +140,14 @@ describe('LocadorController', () => {
       status: StatusLocador.INATIVO,
     });
 
-    const resultado = await controller.inativarLocador(usuarioMock, 1);
+    const requisicaoMock = { headers: { authorization: 'Bearer token-de-teste' } } as any;
+    const resultado = await controller.inativarLocador(usuarioMock, 1, requisicaoMock);
 
     expect(locadorServiceMock.inativarLocador).toHaveBeenCalledWith(
       1,
       1,
       'USER',
+      'Bearer token-de-teste',
     );
     expect(resultado.status).toBe(StatusLocador.INATIVO);
   });

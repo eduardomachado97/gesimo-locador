@@ -4,6 +4,8 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
 import { PrismaService } from '../../../database/prisma.service';
 import { CriarLocadorDto } from '../dto/create-locador.dto';
 import { AtualizarLocadorDto } from '../dto/update-locador.dto';
@@ -36,7 +38,44 @@ function filtroDeAcesso(usuarioId: number, papel?: string) {
 
 @Injectable()
 export class LocadorService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly httpService: HttpService,
+  ) {}
+
+  // Achado real: contratolocacao.idLocador só era validado como "proprietário atual" na criação do
+  // contrato — inativar/excluir um locador aqui nunca avisava microsservico-imoveis, deixando
+  // contratos ativos apontando pra um representante que não existe mais (hard delete) ou que não é
+  // mais dono de nada (qualquer um dos dois). Diferente da chamada de recibos-locador pra
+  // api-repasses (que falha em silêncio, só um detalhe de exibição): aqui, se o outro serviço
+  // responder 400 (ex. "ficaria sem representante"), o erro PROPAGA e barra a operação — é a defesa
+  // real contra deixar um contrato ativo órfão. Qualquer outra falha (rede, serviço fora do ar) não
+  // bloqueia — não seria razoável travar uma inativação/exclusão só porque o outro serviço está fora
+  // do ar nesse instante.
+  private async removerPropriedadesNoMicrosservicoDeImoveis(
+    idLocador: number,
+    hard: boolean,
+    authorization: string | undefined,
+  ): Promise<void> {
+    const baseUrl = process.env.IMOVEIS_MICROSERVICE_URL || 'http://localhost:3003';
+    try {
+      await firstValueFrom(
+        this.httpService.patch(
+          `${baseUrl}/imoveis/locador/${idLocador}/remover-propriedades`,
+          { hard },
+          { headers: authorization ? { Authorization: authorization } : {} },
+        ),
+      );
+    } catch (erro: any) {
+      if (erro?.response?.status === 400) {
+        throw new BadRequestException(
+          erro.response.data?.message ||
+            'Não é possível concluir: um ou mais imóveis deste locador ficariam com um contrato ativo sem representante.',
+        );
+      }
+      // Rede/serviço fora do ar/qualquer outro erro — não bloqueia a operação local.
+    }
+  }
 
   async criarLocador(
     criarLocadorDto: CriarLocadorDto,
@@ -313,6 +352,7 @@ export class LocadorService {
     id: number,
     usuarioIdCorretorLogado: number,
     papel?: string,
+    authorization?: string,
   ) {
     if (!id || id <= 0) {
       throw new BadRequestException('ID do locador inválido.');
@@ -332,6 +372,11 @@ export class LocadorService {
     if (!locadorExistente) {
       throw new NotFoundException('Locador não encontrado.');
     }
+
+    // Soft delete: a posse (propriedadeimovel) não muda — só contratos ATIVOS podem ser reatribuídos
+    // (ver removerPropriedadesNoMicrosservicoDeImoveis/ImoveisController). Chamado ANTES do update:
+    // se bloquear, a inativação nem acontece.
+    await this.removerPropriedadesNoMicrosservicoDeImoveis(id, false, authorization);
 
     const locadorInativado = await this.prisma.locador.update({
       where: {
@@ -387,6 +432,7 @@ export class LocadorService {
     id: number,
     usuarioIdCorretorLogado: number,
     papel?: string,
+    authorization?: string,
   ) {
     if (!id || id <= 0) {
       throw new BadRequestException('ID do locador inválido.');
@@ -406,6 +452,12 @@ export class LocadorService {
     if (!locadorExistente) {
       throw new NotFoundException('Locador não encontrado.');
     }
+
+    // Hard delete: além de reatribuir contratos ATIVOS, remove de vez a posse (propriedadeimovel)
+    // desse locador em microsservico-imoveis — sem isso, excluir o locador aqui deixaria uma
+    // referência órfã de verdade lá (o ID não existiria mais em lugar nenhum). Chamado ANTES da
+    // exclusão local: se bloquear, nada é apagado.
+    await this.removerPropriedadesNoMicrosservicoDeImoveis(id, true, authorization);
 
     // As tabelas de endereço e pessoa física/jurídica possuem onDelete: Cascade,
     // mas removemos explicitamente para garantir a limpeza mesmo sem suporte a FK.

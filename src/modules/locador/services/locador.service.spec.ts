@@ -1,5 +1,7 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { HttpService } from '@nestjs/axios';
+import { of } from 'rxjs';
 import { PrismaService } from '../../../database/prisma.service';
 import { StatusLocador } from '../enums/status-locador.enum';
 import { TipoPessoaLocador } from '../enums/tipo-pessoa-locador.enum';
@@ -34,6 +36,13 @@ describe('LocadorService', () => {
       deleteMany: jest.fn(),
     },
     $transaction: jest.fn(),
+  };
+
+  // removerPropriedadesNoMicrosservicoDeImoveis() chama isso antes de inativar/excluir — por padrão
+  // responde OK (nenhum contrato ativo ficaria sem representante), como a grande maioria dos casos
+  // reais. Testes que precisam do bloqueio (400) sobrescrevem com mockRejectedValueOnce.
+  const httpServiceMock = {
+    patch: jest.fn().mockReturnValue(of({ data: {} })),
   };
 
   const locadorMock = {
@@ -78,6 +87,10 @@ describe('LocadorService', () => {
         {
           provide: PrismaService,
           useValue: prismaMock,
+        },
+        {
+          provide: HttpService,
+          useValue: httpServiceMock,
         },
       ],
     }).compile();
@@ -249,6 +262,56 @@ describe('LocadorService', () => {
       },
       include: INCLUDE_LOCADOR_COMPLETO,
     });
+
+    expect(resultado.status).toBe(StatusLocador.INATIVO);
+  });
+
+  it('avisa microsservico-imoveis (hard=false) e repassa o Authorization ao inativar', async () => {
+    prismaMock.locador.findFirst.mockResolvedValue(locadorMock);
+    prismaMock.locador.update.mockResolvedValue(locadorMock);
+
+    await service.inativarLocador(1, 1, undefined, 'Bearer token-original');
+
+    expect(httpServiceMock.patch).toHaveBeenCalledWith(
+      expect.stringContaining('/imoveis/locador/1/remover-propriedades'),
+      { hard: false },
+      { headers: { Authorization: 'Bearer token-original' } },
+    );
+  });
+
+  it('avisa microsservico-imoveis (hard=true) ao excluir definitivamente', async () => {
+    prismaMock.locador.findFirst.mockResolvedValue(locadorMock);
+    prismaMock.$transaction.mockImplementation((fn: (tx: unknown) => unknown) => fn(prismaMock));
+
+    await service.removerLocadorDefinitivo(1, 1);
+
+    expect(httpServiceMock.patch).toHaveBeenCalledWith(
+      expect.stringContaining('/imoveis/locador/1/remover-propriedades'),
+      { hard: true },
+      { headers: {} },
+    );
+  });
+
+  it('bloqueia a inativação quando microsservico-imoveis recusa (contrato ativo ficaria sem representante)', async () => {
+    prismaMock.locador.findFirst.mockResolvedValue(locadorMock);
+    // O try/catch do service trata qualquer erro lançado na chamada da mesma forma que trataria um
+    // erro emitido pelo Observable via firstValueFrom — lançar direto do mock já simula isso.
+    httpServiceMock.patch.mockImplementationOnce(() => {
+      throw { response: { status: 400, data: { message: 'Imóvel 7 ficaria sem representante.' } } };
+    });
+
+    await expect(service.inativarLocador(1, 1)).rejects.toThrow(BadRequestException);
+    expect(prismaMock.locador.update).not.toHaveBeenCalled();
+  });
+
+  it('não bloqueia a inativação quando a chamada a microsservico-imoveis falha por outro motivo (rede/fora do ar)', async () => {
+    prismaMock.locador.findFirst.mockResolvedValue(locadorMock);
+    prismaMock.locador.update.mockResolvedValue({ ...locadorMock, status: StatusLocador.INATIVO });
+    httpServiceMock.patch.mockImplementationOnce(() => {
+      throw new Error('ECONNREFUSED');
+    });
+
+    const resultado = await service.inativarLocador(1, 1);
 
     expect(resultado.status).toBe(StatusLocador.INATIVO);
   });
